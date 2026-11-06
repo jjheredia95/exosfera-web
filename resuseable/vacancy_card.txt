@@ -1,0 +1,104 @@
+import type { HomeVacancy, homeStat } from "./types/home";
+import type { Page } from "./types/page";
+
+// TRANSLATIONS
+const employmentLabels = {
+  FULL_TIME: "Full time",
+  PART_TIME: "Part time",
+  CONTRACT: "Contract",
+};
+
+const statusLabels = {
+  PUBLISHED: "Opening soon",
+  OPEN: "Accepting Applications",
+};
+
+const [vacancies, setVacancies] = useState<HomeVacancy[]>([]);
+const [totalElements, setTotalElements] = useState(0);
+
+async function loadVacancies() {
+    const response = await fetch("http://localhost:8080/api/home");
+    const data: Page<HomeVacancy> = await response.json();
+    setVacancies(data.content);
+    setTotalElements(data.totalElements);
+  }
+
+
+
+
+
+<article className="job-card">
+              {/* ARRIBA: logo + status */}
+              <div className="job-card-top">
+                <div className="company-logo">C</div>
+                {/* ← aquí: tu inicial de la empresa */}
+
+                <span className="job-status status-open">
+                  {/* ← aquí: tu className con status-${...} */}
+                  <span className="status-dot"></span>
+                  Accepting Applications
+                  {/* ← aquí: statusLabels[...] */}
+                </span>
+              </div>
+
+              {/* CENTRO: categoría, título, empresa */}
+              <div className="job-heading">
+                <span className="jh-badge badge-cat">Technology</span>
+                {/* ← aquí: la categoría */}
+
+                <h3 className="job-title">Cloud Infrastructure Engineer</h3>
+                {/* ← aquí: el nombre */}
+
+                <p className="job-company">
+                  <i className="fa-regular fa-building"></i>
+                  CloudPeak Systems
+                  {/* ← aquí: la empresa */}
+                </p>
+              </div>
+
+              {/* Ciudades y tipo de empleo (el salario ya NO va aquí, va abajo) */}
+              <div className="job-meta">
+                <span className="meta-item">
+                  {/* ← aquí: tu .map de locations (un meta-item por ciudad) */}
+                  <i className="fa-solid fa-location-dot"></i>
+                  Seattle, WA
+                </span>
+                <span className="meta-item">
+                  <i className="fa-solid fa-briefcase"></i>
+                  Full time
+                  {/* ← aquí: employmentLabels[...] */}
+                </span>
+              </div>
+
+              <p className="job-desc">
+                Design and manage scalable cloud infrastructure on AWS.
+                {/* ← aquí: la descripción */}
+              </p>
+
+              {/* FRANJA DE FECHAS */}
+              <div className="job-dates">
+                <span className="job-date">
+                  <i className="fa-regular fa-clock"></i>7 days ago
+                  {/* ← aquí: daysAgo(...) */}
+                </span>
+
+                {/* ← aquí: tu condición (PUBLISHED || closeDate !== null) && ( ... ) envolviendo este span */}
+                <span className="job-deadline">
+                  <i className="fa-regular fa-calendar"></i>
+                  Closes Dec 16
+                  {/* ← aquí: tus dos líneas de "Closes" / "Opens" */}
+                </span>
+              </div>
+
+              {/* ABAJO: salario + botón */}
+              <div className="job-card-footer">
+                {/* ← aquí: tu condición salary !== null && ( ... ) envolviendo este span */}
+                <span className="job-salary">$135,000</span>
+                {/* ← aquí: "$" + toLocaleString(...) (ahora sin el ícono, el $ va en el texto) */}
+
+                <a href="#" className="btn-view">
+                  View
+                  <i className="fa-solid fa-arrow-right"></i>
+                </a>
+              </div>
+            </article>

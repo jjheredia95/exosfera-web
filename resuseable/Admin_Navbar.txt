@@ -1,0 +1,65 @@
+<header className="navbar">
+        <div className="container navbar-container">
+          <a href="#" className="navbar-brand">
+            <span className="brand-icon">
+              <i className="fa-solid fa-earth-americas"></i>
+            </span>
+            Exosfera
+          </a>
+
+          <nav className="navbar-links" aria-label="Admin navigation">
+            <a href="#" className="nav-link active">
+              <i className="fa-solid fa-briefcase"></i>
+              Vacancies
+            </a>
+
+            <div className="nav-dropdown">
+              <button type="button" className="nav-link">
+                <i className="fa-solid fa-sliders"></i>
+                Manage
+                <i className="fa-solid fa-chevron-down nav-caret"></i>
+              </button>
+
+              {/* El menú está escondido con CSS. Más adelante lo abriremos con onClick */}
+              <div className="dropdown-menu">
+                <a href="#" className="dropdown-item">
+                  <i className="fa-solid fa-building"></i>
+                  Companies
+                </a>
+                <a href="#" className="dropdown-item">
+                  <i className="fa-solid fa-layer-group"></i>
+                  Categories
+                </a>
+                <a href="#" className="dropdown-item">
+                  <i className="fa-solid fa-users"></i>
+                  Users
+                </a>
+              </div>
+            </div>
+          </nav>
+
+          <div className="navbar-actions">
+            <a href="#" className="btn-new-vacancy">
+              <i className="fa-solid fa-plus"></i>
+              <span>New vacancy</span>
+            </a>
+
+            <span className="navbar-divider" aria-hidden="true"></span>
+
+            <a href="#" className="btn-login">
+              Log in
+            </a>
+            <a href="#" className="btn-signup">
+              Sign up
+            </a>
+
+            <button
+              type="button"
+              className="navbar-toggle"
+              aria-label="Open menu"
+            >
+              <i className="fa-solid fa-bars"></i>
+            </button>
+          </div>
+        </div>
+      </header>
