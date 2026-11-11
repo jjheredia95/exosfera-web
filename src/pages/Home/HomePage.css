@@ -461,6 +461,79 @@
 }
 
 /* =========================================
+   ESTADOS: cargando, error y sin resultados
+========================================= */
+
+/* Cargando */
+.loading-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  min-height: 200px;
+  color: var(--jh-muted);
+  font-size: 0.9rem;
+}
+
+.loading-spinner {
+  width: 22px;
+  height: 22px;
+  border: 3px solid #e3e2ff;
+  border-top-color: var(--jh-primary);
+  border-radius: 50%;
+  animation: jh-spin 0.8s linear infinite;
+}
+
+@keyframes jh-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Tarjeta para error y "sin resultados" */
+.state-card {
+  padding: 3rem 1.5rem;
+  text-align: center;
+  background: var(--jh-surface);
+  border: 1px solid var(--jh-border);
+  border-radius: 15px;
+}
+
+.state-card h3 {
+  margin: 0 0 0.5rem;
+  color: var(--jh-navy);
+  font-size: 1.1rem;
+  font-weight: 750;
+}
+
+.state-card p {
+  margin: 0 0 1.2rem;
+  color: var(--jh-muted);
+  font-size: 0.9rem;
+}
+
+/* Ícono de la lupa en "sin resultados" */
+.empty-icon {
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  margin: 0 auto 1rem;
+  color: var(--jh-primary);
+  background: #f0efff;
+  border-radius: 15px;
+  font-size: 1.25rem;
+}
+
+/* Ícono rojo del error */
+.error-state > i {
+  display: block;
+  margin-bottom: 1rem;
+  color: #d04455;
+  font-size: 1.7rem;
+}
+
+/* =========================================
    RESPONSIVE (Home)
 ========================================= */
 
