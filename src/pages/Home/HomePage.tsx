@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import type { homeStat } from "@/types/home";
-import "./HomePage.css"
+import type { HomeStat } from "@/types/home";
+import "./HomePage.css";
 
 function HomePage() {
-  const [statistic, setStatistic] = useState<homeStat>({
+
+  const [statistic, setStatistic] = useState<HomeStat>({
     jobsOpenCount: 0,
     companiesCount: 0,
     categoriesCount: 0,
@@ -12,8 +13,8 @@ function HomePage() {
 
   async function loadStats() {
     const response = await fetch("http://localhost:8080/api/home/stats");
-    const data: homeStat = await response.json();
-    setStatistic(data); 
+    const data: HomeStat = await response.json();
+    setStatistic(data);
   }
 
   useEffect(() => {
@@ -31,100 +32,41 @@ function HomePage() {
 
         <div className="container hero-container">
           <div className="hero-content">
-            <span className="hero-eyebrow">
-              <i className="fa-solid fa-compass"></i>
-              YOUR NEXT OPPORTUNITY STARTS HERE
-            </span>
-
             <h1>
-              Discover opportunities
-              <span>beyond the sky.</span>
+              Find opportunities
+               <span>beyond the sky.</span>
             </h1>
 
             <p className="hero-subtitle">
               Jobs that match your skills and ambitions.
             </p>
 
-            <form className="search-form">
-              <div className="search-box">
-                <i className="fa-solid fa-magnifying-glass search-icon"></i>
-
+            <form className="hero-search">
+              <label className="hero-search-field keyword">
+                <i className="fa-solid fa-magnifying-glass"></i>
                 <input
                   type="search"
-                  className="search-input"
                   aria-label="Search jobs"
-                  placeholder="Job title, keyword, or description..."
+                  placeholder="Job title, keyword, or company"
                 />
+              </label>
 
-                <button type="submit" className="btn-search">
-                  Search
-                  <i className="fa-solid fa-arrow-right"></i>
-                </button>
-              </div>
+              <span className="hero-search-divider" aria-hidden="true"></span>
 
-              <div className="filter-selects">
-                <label className="select-field">
-                  <span className="select-label">
-                    <i className="fa-solid fa-location-dot"></i> State
-                  </span>
-                  <select className="select-input">
-                    <option value="">Any state</option>
-                    <option value="NY">New York (NY)</option>
-                    <option value="WA">Washington (WA)</option>
-                  </select>
-                </label>
+              <label className="hero-search-field">
+                <i className="fa-solid fa-location-dot"></i>
+                <select aria-label="State">
+                  <option value="">Any state</option>
+                  <option value="NY">New York (NY)</option>
+                  <option value="WA">Washington (WA)</option>
+                </select>
+              </label>
 
-                <label className="select-field">
-                  <span className="select-label">
-                    <i className="fa-solid fa-briefcase"></i> Employment type
-                  </span>
-                  <select className="select-input">
-                    <option value="">Any type</option>
-                    <option value="FULL_TIME">Full time</option>
-                    <option value="PART_TIME">Part time</option>
-                    <option value="CONTRACT">Contract</option>
-                  </select>
-                </label>
-
-                <label className="select-field">
-                  <span className="select-label">
-                    <i className="fa-solid fa-house-laptop"></i> Work mode
-                  </span>
-                  <select className="select-input">
-                    <option value="">Any mode</option>
-                    <option value="REMOTE">Remote</option>
-                    <option value="HYBRID">Hybrid</option>
-                    <option value="ONSITE">On-site</option>
-                  </select>
-                </label>
-              </div>
+              <button type="submit" className="btn-search">
+                Search
+                <i className="fa-solid fa-arrow-right"></i>
+              </button>
             </form>
-
-            <div className="filter-area">
-              <span className="filter-label">Explore by category</span>
-
-              <div className="filter-row">
-                <button type="button" className="f-pill active">
-                  <i className="fa-solid fa-table-cells-large"></i>
-                  All jobs
-                </button>
-
-                <button type="button" className="f-pill">
-                  <i className="fa-solid fa-laptop-code"></i>
-                  Technology
-                </button>
-
-                <button type="button" className="f-pill">
-                  <i className="fa-solid fa-heart-pulse"></i>
-                  Healthcare
-                </button>
-
-                <button type="button" className="f-pill clear-filter">
-                  <i className="fa-solid fa-xmark"></i>
-                  Clear filters
-                </button>
-              </div>
-            </div>
           </div>
         </div>
       </section>

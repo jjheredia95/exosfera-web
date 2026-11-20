@@ -3,9 +3,113 @@
    Se importa en HomePage.tsx
 ========================================= */
 
+/* =========================================
+   GENERALES DEL HOME
+   (espaciado, botón de búsqueda, títulos de sección)
+========================================= */
+
 .home-section {
   padding: 3.5rem 0;
 }
+
+.btn-search {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-shrink: 0;
+  padding: 0.85rem 1.3rem;
+  color: white;
+  background: var(--jh-primary);
+  border: 1px solid var(--jh-primary);
+  border-radius: 10px;
+  font-size: 0.86rem;
+  font-weight: 650;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    transform 0.2s;
+}
+
+.btn-search:hover {
+  background: var(--jh-primary-dark);
+  border-color: var(--jh-primary-dark);
+  transform: translateY(-1px);
+}
+
+.section-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.6rem;
+}
+
+.section-title {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 0;
+  padding-left: 1.4rem;
+  color: var(--jh-navy);
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+}
+
+.section-title::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 5px;
+  height: 1.7rem;
+  background: var(--jh-primary);
+  border-radius: 4px;
+  transform: translateY(-50%);
+}
+
+.badge-count {
+  padding: 0.35rem 0.7rem;
+  color: #6257e8;
+  background: #eeedff;
+  border-radius: 100px;
+  font-size: 0.72rem;
+  font-weight: 650;
+  letter-spacing: 0;
+}
+
+.section-description {
+  margin: 0.55rem 0 0;
+  padding-left: 1.4rem;
+  color: var(--jh-muted);
+  font-size: 0.87rem;
+  line-height: 1.6;
+}
+
+.reset-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0;
+  color: var(--jh-primary-dark);
+  background: transparent;
+  border: none;
+  font-size: 0.85rem;
+  font-weight: 700;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.reset-link:hover {
+  color: var(--jh-navy);
+}
+
+a.reset-link {
+  text-decoration: none;
+}
+
 
 /* =========================================
    HERO
@@ -15,7 +119,7 @@
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  padding: 4.5rem 1.5rem 3.25rem;
+  padding: 6rem 1.5rem 7rem;
   /* Negro espacial, igual al negro de la foto, con un brillo morado suave */
   background:
     radial-gradient(
@@ -35,24 +139,13 @@
   max-width: 840px;
 }
 
-.hero-eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 1.15rem;
-  color: #a5a0ff;
-  font-size: 0.72rem;
-  font-weight: 750;
-  letter-spacing: 0.12em;
-}
-
 .hero h1 {
   max-width: 780px;
   margin: 0;
   color: #ffffff;
-  font-size: clamp(2.5rem, 5.4vw, 4.2rem);
+  font-size: clamp(2.6rem, 6vw, 4.6rem);
   font-weight: 800;
-  line-height: 1.08;
+  line-height: 1.05;
   letter-spacing: -0.055em;
 }
 
@@ -64,7 +157,7 @@
 .hero-subtitle {
   margin: 1.25rem 0 1.8rem;
   color: #b7c0d8;
-  font-size: 1.05rem;
+  font-size: 1.25rem;
   line-height: 1.75;
 }
 
@@ -95,48 +188,85 @@
   position: absolute;
   z-index: -1;
   top: 0;
-  right: -10%;
+  right: 0;
   bottom: 0;
-  width: 58%;
+  width: 48%;
   pointer-events: none;
-  background: url("/Awesome_Earth.jpg") center / cover no-repeat;
+  background: url("/Awesome_Earth.jpg") 20% center / auto 110% no-repeat;
   /* Se desvanece hacia el negro del fondo, así no se nota el borde */
   -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 35%);
   mask-image: linear-gradient(to right, transparent 0%, #000 35%);
 }
 
-/* Controles del hero: versión oscura (solo en el Home) */
-.hero .search-box {
+/* Buscador del hero: barra blanca con texto + estado + botón */
+.hero-search {
+  display: flex;
+  align-items: center;
+  max-width: 780px;
+  padding: 0.45rem;
+  background: var(--jh-surface);
   border: 1px solid transparent;
+  border-radius: 15px;
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.hero .select-label,
-.hero .filter-label {
-  color: #9aa5c2;
-}
-
-.hero .f-pill {
-  color: #d6dcf0;
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(255, 255, 255, 0.14);
-}
-
-.hero .f-pill:hover {
-  color: #fff;
-  background: rgba(255, 255, 255, 0.12);
-  border-color: rgba(255, 255, 255, 0.3);
-}
-
-.hero .f-pill.active {
-  color: #fff;
-  background: var(--jh-primary);
+.hero-search:focus-within {
   border-color: var(--jh-primary);
+  box-shadow: 0 0 0 4px rgba(99, 91, 255, 0.25), 0 12px 40px rgba(0, 0, 0, 0.45);
 }
 
-.hero .f-pill.clear-filter {
-  color: #c9c5ff;
-  border-color: rgba(140, 133, 255, 0.6);
+.hero-search-field {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  min-width: 0;
+  padding: 0 1rem;
+}
+
+/* El campo de texto ocupa todo el espacio que sobra */
+.hero-search-field.keyword {
+  flex: 1;
+}
+
+.hero-search-field i {
+  color: #8995b0;
+}
+
+.hero-search-field input,
+.hero-search-field select {
+  min-width: 0;
+  padding: 0.85rem 0;
+  color: var(--jh-text);
+  background: transparent;
+  border: none;
+  outline: none;
+  font: inherit;
+  font-size: 0.95rem;
+}
+
+.hero-search-field input {
+  flex: 1;
+}
+
+.hero-search-field input::placeholder {
+  color: #9ba6bc;
+}
+
+.hero-search-field select {
+  width: 10rem;
+  cursor: pointer;
+}
+
+/* Línea fina entre los dos campos */
+.hero-search-divider {
+  width: 1px;
+  height: 28px;
+  background: #e3e7f2;
+}
+
+.hero-search .btn-search {
+  margin-left: 0.4rem;
 }
 
 /* =========================================
@@ -151,8 +281,8 @@
 .stats-container {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  padding-top: 1.4rem;
-  padding-bottom: 1.4rem;
+  padding-top: 2.2rem;
+  padding-bottom: 2.2rem;
 }
 
 .stat-item {
@@ -174,28 +304,28 @@
   display: grid;
   place-items: center;
   flex-shrink: 0;
-  width: 54px;
-  height: 54px;
+  width: 60px;
+  height: 60px;
   color: var(--jh-primary-dark);
   background: #f0efff;
-  border-radius: 50%;
-  font-size: 1.2rem;
+  border-radius: 16px;
+  font-size: 1.35rem;
 }
 
 .stat-value {
   display: block;
   color: var(--jh-navy);
-  font-size: 1.45rem;
+  font-size: 2.1rem;
   font-weight: 800;
   line-height: 1.2;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.04em;
 }
 
 .stat-label {
   display: block;
-  margin-top: 0.1rem;
-  color: #7b87a3;
-  font-size: 0.68rem;
+  margin-top: 0.2rem;
+  color: #5f6b85;
+  font-size: 0.74rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -461,79 +591,6 @@
 }
 
 /* =========================================
-   ESTADOS: cargando, error y sin resultados
-========================================= */
-
-/* Cargando */
-.loading-state {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.8rem;
-  min-height: 200px;
-  color: var(--jh-muted);
-  font-size: 0.9rem;
-}
-
-.loading-spinner {
-  width: 22px;
-  height: 22px;
-  border: 3px solid #e3e2ff;
-  border-top-color: var(--jh-primary);
-  border-radius: 50%;
-  animation: jh-spin 0.8s linear infinite;
-}
-
-@keyframes jh-spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* Tarjeta para error y "sin resultados" */
-.state-card {
-  padding: 3rem 1.5rem;
-  text-align: center;
-  background: var(--jh-surface);
-  border: 1px solid var(--jh-border);
-  border-radius: 15px;
-}
-
-.state-card h3 {
-  margin: 0 0 0.5rem;
-  color: var(--jh-navy);
-  font-size: 1.1rem;
-  font-weight: 750;
-}
-
-.state-card p {
-  margin: 0 0 1.2rem;
-  color: var(--jh-muted);
-  font-size: 0.9rem;
-}
-
-/* Ícono de la lupa en "sin resultados" */
-.empty-icon {
-  display: grid;
-  place-items: center;
-  width: 54px;
-  height: 54px;
-  margin: 0 auto 1rem;
-  color: var(--jh-primary);
-  background: #f0efff;
-  border-radius: 15px;
-  font-size: 1.25rem;
-}
-
-/* Ícono rojo del error */
-.error-state > i {
-  display: block;
-  margin-bottom: 1rem;
-  color: #d04455;
-  font-size: 1.7rem;
-}
-
-/* =========================================
    RESPONSIVE (Home)
 ========================================= */
 
@@ -567,6 +624,11 @@
 }
 
 @media (max-width: 767.98px) {
+  .section-heading {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
   .hero {
     padding: 3rem 1rem 2.5rem;
   }
@@ -588,20 +650,27 @@
   }
 }
 
-@media (max-width: 479.98px) {
-  .search-box {
-    flex-wrap: wrap;
+@media (max-width: 575.98px) {
+  /* El buscador del hero: cada campo en su propia fila */
+  .hero-search {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.3rem;
   }
 
-  .search-input {
-    flex-basis: calc(100% - 3rem);
+  .hero-search-divider {
+    width: auto;
+    height: 1px;
+    margin: 0 1rem;
   }
 
-  .search-box .btn-search {
-    width: 100%;
+  .hero-search .btn-search {
     justify-content: center;
+    margin-left: 0;
   }
+}
 
+@media (max-width: 479.98px) {
   .stats-container {
     grid-template-columns: 1fr;
   }

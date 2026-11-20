@@ -1,4 +1,4 @@
-export type homeStat = {
+export type HomeStat = {
     jobsOpenCount: number,
     companiesCount: number,
     categoriesCount: number,

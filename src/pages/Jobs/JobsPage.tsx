@@ -1,6 +1,7 @@
 import "./JobsPage.css";
 import { useEffect, useState } from "react";
 import type { VacancyCard } from "@/types/vacancy";
+import type { Category } from "@/types/category";
 import type { Page } from "@/types/page";
 
 const employmentLabels = {
@@ -36,19 +37,32 @@ function daysAgo(date: string) {
 }
 
 function JobsPage() {
+  const [categories, setCategories] = useState<Category[]>([]);
   const [vacancies, setVacancies] = useState<VacancyCard[]>([]);
   const [totalElements, setTotalElements] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
   const [userErrorMsg, setUserErrorMsg] = useState<string>("");
+
+  async function loadCategories() {
+    try {
+      const response = await fetch("http://localhost:8080/api/categories");
+      if (!response.ok) {
+        throw new Error("Categories failed with status: " + response.status);
+      }
+
+      const catsData: Category[] = await response.json();
+      setCategories(catsData);
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   async function loadVacancies() {
     setLoading(true);
     setUserErrorMsg("");
 
     try {
-      const response = await fetch(
-        "http://localhost:8080/api/vacancies/featured",
-      );
+      const response = await fetch("http://localhost:8080/api/jobs/featured");
 
       if (!response.ok) {
         throw new Error("Request failed with status: " + response.status);
@@ -66,6 +80,7 @@ function JobsPage() {
   }
 
   useEffect(() => {
+    loadCategories();
     loadVacancies();
   }, []);
 
@@ -79,14 +94,17 @@ function JobsPage() {
             Search every open position on Exosfera.
           </p>
 
-          <form className="search-row">
+          <form
+            className="search-row"
+            onSubmit={(event) => event.preventDefault()}
+          >
             <div className="search-box">
               <i className="fa-solid fa-magnifying-glass search-icon"></i>
               <input
                 type="search"
                 className="search-input"
                 aria-label="Search jobs"
-                placeholder="Job title, keyword, or description..."
+                placeholder="Enter keyword..."
               />
             </div>
 
@@ -116,36 +134,34 @@ function JobsPage() {
           </form>
 
           <div className="filter-row">
-            <button type="button" className="f-pill active">
-              <i className="fa-solid fa-table-cells-large"></i>
-              All jobs
-            </button>
-            <button type="button" className="f-pill">
-              <i className="fa-solid fa-laptop-code"></i>
-              Technology
-            </button>
-            <button type="button" className="f-pill">
-              <i className="fa-solid fa-heart-pulse"></i>
-              Healthcare
-            </button>
+            <span className="filter-row-label">Categories:</span>
+
+            {/* CATS */}
+            {categories.map((category) => (
+              <button type="button" className="f-pill" key={category.id}>
+                {category.name}
+              </button>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* RESULTADOS */}
+      {/* JOBS RESULTS */}
       <section className="results-section">
         <div className="container">
           <div className="results-bar">
-            <p className="results-count">
-              {totalElements} vacancies <span>featured</span>
-            </p>
+            <h2 className="results-heading">
+              Featured Jobs <span>{totalElements} vacancies</span>
+            </h2>
 
-            <label className="sort">
-              Sort by
-              <select className="select-input">
-                <option>Newest</option>
-              </select>
-            </label>
+            <div className="results-tabs">
+              <button type="button" className="results-tab active">
+                Featured
+              </button>
+              <button type="button" className="results-tab">
+                All jobs
+              </button>
+            </div>
           </div>
 
           {/* 1. Loading */}
@@ -161,7 +177,11 @@ function JobsPage() {
             <div className="state-card error-state" role="alert">
               <i className="fa-solid fa-circle-exclamation"></i>
               <p>{userErrorMsg}</p>
-              <button type="button" className="btn-search" onClick={loadVacancies}>
+              <button
+                type="button"
+                className="btn-search"
+                onClick={loadVacancies}
+              >
                 Try again
               </button>
             </div>
