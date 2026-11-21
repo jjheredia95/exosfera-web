@@ -8,6 +8,16 @@
    Buscador, botón, selects y categorías
 ========================================= */
 
+.search-hint {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0.8rem 0 0;
+  color: #fcd34d;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
 /* Buscador */
 .search-box {
   display: flex;

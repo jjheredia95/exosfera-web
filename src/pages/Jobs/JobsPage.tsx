@@ -28,7 +28,7 @@ function daysAgo(date: string) {
   today.setHours(0, 0, 0, 0);
 
   const days = Math.round(
-    (today.getTime() - published.getTime()) / (1000 * 60 * 60 * 24),
+    (today.getTime() - published.getTime()) / (1000 * 60 * 60 * 24)
   );
 
   if (days === 0) return "Today";
@@ -36,8 +36,21 @@ function daysAgo(date: string) {
   return `${days} days ago`;
 }
 
+type ResultsView = "FEATURED" | "ALL" | "SEARCH";
+
 function JobsPage() {
+  const [view, setView] = useState<ResultsView>("FEATURED");
+  const [searchHint, setSearchHint] = useState<string>("");
+
+  // CATEGORIES STATES
   const [categories, setCategories] = useState<Category[]>([]);
+  const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(
+    null
+  );
+  const [appliedCategoryId, setAppliedCategoryId] = useState<number | null>(
+    null
+  );
+
   const [vacancies, setVacancies] = useState<VacancyCard[]>([]);
   const [totalElements, setTotalElements] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
@@ -61,8 +74,18 @@ function JobsPage() {
     setLoading(true);
     setUserErrorMsg("");
 
+    let url: string;
+
+    if (view === "FEATURED") {
+      url = "http://localhost:8080/api/jobs/featured";
+    } else if (view === "ALL") {
+      url = "http://localhost:8080/api/jobs/all";
+    } else {
+      url = `http://localhost:8080/api/jobs/search?categoryId=${appliedCategoryId}`;
+    }
+
     try {
-      const response = await fetch("http://localhost:8080/api/jobs/featured");
+      const response = await fetch(url);
 
       if (!response.ok) {
         throw new Error("Request failed with status: " + response.status);
@@ -79,10 +102,40 @@ function JobsPage() {
     }
   }
 
+  function handleSearch(event: React.SubmitEvent<HTMLFormElement>): void {
+    event.preventDefault();
+
+    if (selectedCategoryId === null) {
+      setSearchHint("Select at least one filter to start a search.");
+      return;
+    }
+
+    setSearchHint("");
+    setAppliedCategoryId(selectedCategoryId);
+    setView("SEARCH");
+  }
+
+  function showFeatured(): void {
+    setSelectedCategoryId(null);
+    setAppliedCategoryId(null);
+    setSearchHint("");
+    setView("FEATURED");
+  }
+
+  function showAllJobs(): void {
+    setSelectedCategoryId(null);
+    setAppliedCategoryId(null);
+    setSearchHint("");
+    setView("ALL");
+  }
+
   useEffect(() => {
     loadCategories();
-    loadVacancies();
   }, []);
+
+  useEffect(() => {
+    loadVacancies();
+  }, [view, appliedCategoryId]);
 
   return (
     <>
@@ -94,10 +147,7 @@ function JobsPage() {
             Search every open position on Exosfera.
           </p>
 
-          <form
-            className="search-row"
-            onSubmit={(event) => event.preventDefault()}
-          >
+          <form className="search-row" onSubmit={handleSearch}>
             <div className="search-box">
               <i className="fa-solid fa-magnifying-glass search-icon"></i>
               <input
@@ -133,12 +183,31 @@ function JobsPage() {
             </button>
           </form>
 
+          {searchHint !== "" && (
+            <p className="search-hint">
+              <i className="fa-solid fa-circle-info"></i>
+              {searchHint}
+            </p>
+          )}
+
           <div className="filter-row">
             <span className="filter-row-label">Categories:</span>
 
             {/* CATS */}
             {categories.map((category) => (
-              <button type="button" className="f-pill" key={category.id}>
+              <button
+                type="button"
+                className={`f-pill ${
+                  selectedCategoryId === category.id ? "active" : ""
+                }`}
+                key={category.id}
+                onClick={() => {
+                  setSelectedCategoryId(
+                    selectedCategoryId === category.id ? null : category.id
+                  );
+                  setSearchHint("");
+                }}
+              >
                 {category.name}
               </button>
             ))}
@@ -155,10 +224,18 @@ function JobsPage() {
             </h2>
 
             <div className="results-tabs">
-              <button type="button" className="results-tab active">
+              <button
+                type="button"
+                className={`results-tab ${view === "FEATURED" ? "active" : ""}`}
+                onClick={showFeatured}
+              >
                 Featured
               </button>
-              <button type="button" className="results-tab">
+              <button
+                type="button"
+                className={`results-tab ${view === "ALL" ? "active" : ""}`}
+                onClick={showAllJobs}
+              >
                 All jobs
               </button>
             </div>
